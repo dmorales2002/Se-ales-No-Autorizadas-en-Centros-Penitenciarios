@@ -53,6 +53,7 @@ function compute(){
     const material = MATERIALS[matIdx];
 
     const fspl = fsplDb(distance, tech.freqMHz);
+    // pérdida_muro = coeficiente(material, banda) × espesor
     const wallLoss = material.coef[techIdx] * thickness;
     const totalLoss = fspl + wallLoss;
     const rx = REF_TX_DBM - wallLoss; // efecto del blindaje sobre la señal en el perímetro
