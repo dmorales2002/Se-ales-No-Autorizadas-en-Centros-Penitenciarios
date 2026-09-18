@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confinamiento de Señal — Simulador de Atenuación Pasiva RF</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+    <header>
+        <div class="kicker">MODELO CONCEPTUAL · ATENUACIÓN PASIVA DE RF</div>
+        <h1>Confinamiento de señal en recintos penitenciarios: de la interferencia activa al blindaje pasivo</h1>
+        <p class="sub">Simulador educativo de pérdida de trayectoria en espacio libre (FSPL) y atenuación por materiales
+            constructivos. Modela por qué el blindaje pasivo confinado es la alternativa técnica y legal frente al
+            jamming activo, que degrada el espectro fuera del perímetro autorizado.</p>
+    </header>
+
+    <div class="grid">
+
+        <div class="panel">
+            <h2>Parámetros de simulación</h2>
+
+            <div class="field">
+                <label>Tecnología / banda <span class="val" id="techFreqLabel">850 MHz</span></label>
+                <select id="tech">
+                    <option value="0">2G — 850 MHz</option>
+                    <option value="1">3G — 1900 MHz</option>
+                    <option value="2" selected>4G — 2100 MHz</option>
+                    <option value="3">5G Sub-6 — 3.5 GHz</option>
+                    <option value="4">5G mmWave — 28 GHz</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Material del muro</label>
+                <select id="material">
+                    <option value="0">Ladrillo</option>
+                    <option value="1" selected>Concreto reforzado</option>
+                    <option value="2">Malla de acero (jaula de Faraday)</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Espesor del muro <span class="val" id="thickVal">0.30 m</span></label>
+                <input type="range" id="thickness" min="0.05" max="1.5" step="0.01" value="0.30">
+            </div>
+
+            <div class="field">
+                <label>Distancia fuente–perímetro <span class="val" id="distVal">8 m</span></label>
+                <input type="range" id="distance" min="2" max="40" step="1" value="8">
+            </div>
+
+            <div class="field">
+                <h2 style="margin-bottom:8px;">λ y comportamiento por banda</h2>
+                <table class="freqtable">
+                    <tr>
+                        <td>850 MHz</td>
+                        <td>λ larga · alta penetración, requiere blindaje masivo</td>
+                    </tr>
+                    <tr>
+                        <td>1900 MHz</td>
+                        <td>propagación moderada</td>
+                    </tr>
+                    <tr>
+                        <td>2100 MHz</td>
+                        <td>λ corta · degradación lineal notable</td>
+                    </tr>
+                    <tr>
+                        <td>3.5 GHz</td>
+                        <td>atenuación elevada, alcance reducido</td>
+                    </tr>
+                    <tr>
+                        <td>28 GHz</td>
+                        <td>bloqueo casi total con materiales básicos</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="stage">
+
+            <div class="visual-panel">
+                <h2>Planta esquemática — propagación y confinamiento</h2>
+                <canvas id="plan" width="920" height="360"></canvas>
+            </div>
+
+            <div class="readout">
+                <div class="cell">
+                    <div class="label">FSPL (espacio libre)</div>
+                    <div class="value" id="fsplOut">— dB</div>
+                </div>
+                <div class="cell">
+                    <div class="label">Atenuación del muro</div>
+                    <div class="value" id="wallOut">— dB</div>
+                </div>
+                <div class="cell">
+                    <div class="label">Pérdida total</div>
+                    <div class="value" id="totalOut">— dB</div>
+                </div>
+                <div class="cell">
+                    <div class="label">Señal en perímetro</div>
+                    <div class="value" id="rxOut">— dBm</div>
+                </div>
+            </div>
+
+            <div class="verdict" id="verdictBox">
+                <div class="vtext">
+                    <b id="verdictTitle">—</b>
+                    <span id="verdictSub"
+                          style="color:var(--muted);">Umbral de comunicación de referencia: −95 dBm</span>
+                </div>
+                <div class="badge" id="verdictBadge">—</div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>Modelo ilustrativo con fines académicos. FSPL(dB) = 20·log₁₀(d_km) + 20·log₁₀(f_MHz) + 32.44. La atenuación
+            por material usa coeficientes de referencia (dB/m) que crecen con la frecuencia, reflejando la relación
+            inversa entre longitud de onda y penetración. La potencia de referencia en la fuente se fija en −50 dBm para
+            fines comparativos entre bandas.</p>
+        <p>Enfoque de diseño: minimizar la pérdida por espacio libre no es el objetivo — el objetivo es maximizar la
+            atenuación confinada al perímetro físico del recinto, evitando degradar el espectro en zonas adyacentes
+            concesionadas a operadores.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</div>
+</body>
+</html>
